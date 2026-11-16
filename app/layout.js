@@ -1,7 +1,7 @@
 import { Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
-// Load the Source Sans 3 font (the font VillageReach's website uses)
+// Load the Source Sans 3 font
 const sourceSans = Source_Sans_3({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700"],
@@ -10,9 +10,9 @@ const sourceSans = Source_Sans_3({
 
 // Text shown in the browser tab and in search results / shared links
 export const metadata = {
-  title: "GTCOP Telehealth Regulatory Assessment | VillageReach",
+  title: "GTCOP Telehealth Regulatory Assessment",
   description:
-    "Telehealth policy documents and maturity rankings for African countries, from the GTCOP regulatory assessment.",
+    "Telehealth policy documents and maturity results for African countries, from the GTCOP regulatory assessment.",
   // PREVIEW ONLY: keeps the test site out of Google. Delete this comment and the robots line at launch.
   robots: { index: false, follow: false },
 };

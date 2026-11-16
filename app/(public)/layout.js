@@ -1,26 +1,17 @@
-import { Source_Sans_3 } from "next/font/google";
-import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { createClient } from "@/lib/supabase/server";
 
-// Load the Source Sans 3 font
-const sourceSans = Source_Sans_3({
-  subsets: ["latin"],
-  weight: ["300", "400", "600", "700"],
-  display: "swap",
-});
+export default async function PublicLayout({ children }) {
+  // Check whether someone is signed in
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-// Text shown in the browser tab and in search results / shared links
-export const metadata = {
-  title: "GTCOP Telehealth Regulatory Assessment",
-  description:
-    "Telehealth policy documents and maturity results for African countries, from the GTCOP regulatory assessment.",
-  // PREVIEW ONLY: keeps the test site out of Google. Delete this comment and the robots line at launch.
-  robots: { index: false, follow: false },
-};
-
-export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={sourceSans.className}>{children}</body>
-    </html>
+    <>
+      <Header signedIn={!!user} />
+      <div className="site-main">{children}</div>
+      <Footer />
+    </>
   );
 }
