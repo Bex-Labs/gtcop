@@ -54,7 +54,7 @@ export default async function CountryMaturity({ countryId, countryCode }) {
 
   // Strongest and weakest domains
   const domains = domainsOf(allUnits).map((d) => ({ ...d, score: calc.domainScores[d.no] })).filter((d) => d.score != null);
-  // Every domain tied at the highest score, and every domain tied at the lowest (as VillageReach reports them)
+  // Every domain tied at the highest score, and every domain tied at the lowest (as the round 1 results report them)
   const top = domains.length ? Math.max(...domains.map((d) => d.score)) : null;
   const bottom = domains.length ? Math.min(...domains.map((d) => d.score)) : null;
   const strongest = domains.filter((d) => d.score === top);

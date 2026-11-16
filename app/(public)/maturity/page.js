@@ -191,7 +191,7 @@ export default async function MaturityPage({ searchParams }) {
             digital health environment (system readiness) side by side.
           </li>
         </ol>
-        <p className="muted small">Telehealth Policy Maturity Assessment Framework, VillageReach for the Global Telehealth Community of Practice.</p>
+        <p className="muted small">Telehealth Policy Maturity Assessment Framework, for the Global Telehealth Community of Practice.</p>
       </section>
 
       <section className="section">

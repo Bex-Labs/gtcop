@@ -31,7 +31,7 @@ export default async function EditUserPage({ params, searchParams }) {
         <label htmlFor="role">Role *</label>
         <select id="role" name="role" defaultValue={profile.role}>
           <option value="contributor">Country contributor</option>
-          <option value="admin">VillageReach admin</option>
+          <option value="admin">GTCOP admin</option>
         </select>
 
         <label htmlFor="country_id">Country (contributors only)</label>

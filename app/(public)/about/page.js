@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const metadata = {
   title: "About | GTCOP Assessment",
-  description: "About VillageReach's GTCOP telehealth regulatory assessment platform.",
+  description: "About the GTCOP telehealth regulatory assessment platform.",
 };
 
 export default async function AboutPage() {

@@ -45,7 +45,7 @@ export default async function ContributorDashboard() {
 
       {!country?.is_visible && (
         <div className="alert alert-success" role="status">
-          {country?.name}&apos;s page isn&apos;t public yet. VillageReach will make it visible when it&apos;s ready.
+          {country?.name}&apos;s page isn&apos;t public yet. The GTCOP team will make it visible when it&apos;s ready.
         </div>
       )}
 

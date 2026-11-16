@@ -19,7 +19,7 @@ export default async function ContributorUploadPage() {
       <p className="breadcrumbs"><Link href="/contributor">My dashboard</Link> / Upload</p>
       <h1>Upload a document</h1>
       <p className="muted">
-        VillageReach reviews every submission before it appears on the public site.
+        The GTCOP team reviews every submission before it appears on the public site.
       </p>
       <ContributorUploadForm
         countryId={country.id}

@@ -77,7 +77,7 @@ export default async function CountryProfilePage({ params, searchParams }) {
         <CopyLinkButton />
       </section>
 
-      {/* Maturity profile + earlier rounds (VillageReach framework) */}
+      {/* Maturity profile + earlier rounds (maturity framework) */}
       <CountryMaturity countryId={country.id} countryCode={country.iso_code} />
 
       {/* Country-specific recommendations (E-03) */}

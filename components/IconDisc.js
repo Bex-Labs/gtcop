@@ -1,4 +1,4 @@
-// Thin white line icons on a coloured circle (VillageReach icon style).
+// Thin white line icons on a coloured circle (GTCOP icon style).
 // Decorative only: screen readers skip them (aria-hidden).
 const ICONS = {
   globe: (

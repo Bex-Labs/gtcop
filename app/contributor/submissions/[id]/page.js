@@ -29,7 +29,7 @@ export default async function EditSubmissionPage({ params }) {
 
       {doc.status === "rejected" && doc.rejection_reason && (
         <div className="alert alert-error" role="status">
-          <strong>VillageReach&apos;s feedback:</strong> {doc.rejection_reason}
+          <strong>Reviewer&apos;s feedback:</strong> {doc.rejection_reason}
         </div>
       )}
 

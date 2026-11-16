@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-const LIMIT_MS = 60 * 60 * 1000; // 60 minutes (A-01 AC4, to confirm with VillageReach)
+const LIMIT_MS = 60 * 60 * 1000; // 60 minutes (A-01 AC4, to confirm with the client)
 const KEY = "gtcop-last-activity";
 
 // Shared between tabs, so working in one tab keeps the others signed in too

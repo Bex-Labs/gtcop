@@ -50,7 +50,7 @@ export default function EditSubmissionForm({ doc, categories }) {
       fileFields = { file_path: path, file_type: file.name.split(".").pop().toUpperCase(), file_size: file.size };
     }
 
-    // Back to "pending" so VillageReach reviews it again
+    // Back to "pending" so an admin reviews it again
     const { error: saveError } = await supabase
       .from("documents")
       .update({

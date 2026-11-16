@@ -24,7 +24,7 @@ export default function SignInForm({ expired }) {
       <div className="card auth-card">
         <p className="eyebrow">GTCOP Assessment</p>
         <h1>Sign in</h1>
-        <p className="muted">For VillageReach staff and country contributors.</p>
+        <p className="muted">For GTCOP staff and country contributors.</p>
 
         {expired && !error && (
           <div className="alert alert-info" role="status">

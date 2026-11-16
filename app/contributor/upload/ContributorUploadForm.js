@@ -47,7 +47,7 @@ export default function ContributorUploadForm({ countryId, countryName, isoCode,
       return setError("The file could not be uploaded. Please try again.");
     }
 
-    // 2. Save the details as "pending": hidden until VillageReach approves it
+    // 2. Save the details as "pending": hidden until an admin approves it
     const { data: saved, error: saveError } = await supabase
       .from("documents")
       .insert({
@@ -86,7 +86,7 @@ export default function ContributorUploadForm({ countryId, countryName, isoCode,
         <div className="alert alert-success" role="status">
           Thank you. Your document has been submitted for review.
         </div>
-        <p>VillageReach will check it before it appears on the public site. You can follow its status on your dashboard.</p>
+        <p>The GTCOP team will check it before it appears on the public site. You can follow its status on your dashboard.</p>
         <div className="form-actions">
           <button type="button" className="btn btn-primary" onClick={() => setDone(false)}>Upload another</button>
           <Link href="/contributor" className="btn btn-outline">Back to dashboard</Link>

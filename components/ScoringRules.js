@@ -1,6 +1,6 @@
 import { LEVELS } from "@/lib/maturity";
 
-// Plain-language summary of how results are worked out (VillageReach maturity framework).
+// Plain-language summary of how results are worked out (Telehealth Policy Maturity Assessment Framework).
 // Shown on the admin results form.
 export default function ScoringRules({ open = false }) {
   return (
@@ -44,7 +44,7 @@ export default function ScoringRules({ open = false }) {
         </li>
       </ol>
       <p className="muted small">
-        Source: VillageReach Telehealth Policy Maturity Assessment Framework (summary edition). Exact weights and decision
+        Source: Telehealth Policy Maturity Assessment Framework (summary edition). Exact weights and decision
         rules will be confirmed against the full Version 3.1.
       </p>
     </details>

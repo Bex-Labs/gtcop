@@ -39,7 +39,7 @@ export default function InviteForm({ countries }) {
       <label htmlFor="role">Role *</label>
       <select id="role" name="role" value={role} onChange={(e) => setRole(e.target.value)}>
         <option value="contributor">Country contributor</option>
-        <option value="admin">VillageReach admin</option>
+        <option value="admin">GTCOP admin</option>
       </select>
 
       {role === "contributor" && (

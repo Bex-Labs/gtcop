@@ -37,7 +37,6 @@ export default function AdminSidebar({ name, role = "Admin", title = "GTCOP Admi
         <div className="sidebar-top-row">
           <Link href={home} className="sidebar-brand" onClick={close}>
             {title}
-            <span>VillageReach</span>
           </Link>
 
           {/* Only shows on phones and tablets */}

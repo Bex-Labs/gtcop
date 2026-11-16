@@ -30,7 +30,7 @@ export default async function ContributorLayout({ children }) {
       <main className="container auth-page">
         <div className="card auth-card">
           <h1>You don&apos;t have access</h1>
-          <p className="muted">Your account isn&apos;t linked to a country yet. Please contact VillageReach.</p>
+          <p className="muted">Your account isn&apos;t linked to a country yet. Please contact the GTCOP team.</p>
           <SignOutButton />
         </div>
       </main>

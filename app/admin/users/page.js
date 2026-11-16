@@ -36,7 +36,7 @@ export default async function UsersPage({ searchParams }) {
   return (
     <>
       <h1>Users</h1>
-      <p className="muted">VillageReach admins and country contributors who can sign in.</p>
+      <p className="muted">GTCOP admins and country contributors who can sign in.</p>
 
       {error && <div className="alert alert-error" role="alert">{error}</div>}
       {saved && <div className="alert alert-success" role="status">{saved}</div>}

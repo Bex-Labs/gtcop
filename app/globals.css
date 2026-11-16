@@ -1,4 +1,4 @@
-/* ===== VillageReach brand colours (from villagereach.org) ===== */
+/* ===== Brand colours ===== */
 :root {
   /* GTCOP colours (Option B). Names kept from before so nothing else needs changing. */
   --brown: #0B4454;        /* GTCOP teal: solid header (was dark brown) */
@@ -15,7 +15,7 @@
   --text: #1B3038;         /* GTCOP ink: headings and body text (was brown) */
   --border: #D1C9C1;       /* thin warm-grey dividers, unchanged */
 
-  /* Maturity levels (VillageReach framework): light to dark teal */
+  /* Maturity levels (maturity framework): light to dark teal */
   --level-1: #8FC0CC;      /* Nascent */
   --level-2: #5E9FB0;      /* Emerging */
   --level-3: #2D7487;      /* Developing */
@@ -1076,7 +1076,7 @@ summary:focus-visible { outline: 3px solid var(--rust-dark); outline-offset: 2px
 /* Upload box: show focus when the hidden file picker is focused */
 .drop-zone:focus-within { outline: 3px solid var(--rust-dark); outline-offset: 2px; }
 
-/* ===== VillageReach shapes (brand step 2) ===== */
+/* ===== shapes (brand step 2) ===== */
 /* Square corners everywhere (set above), uppercase buttons,
    and the brand's slanted cut on the bottom-right corner. */
 .btn {
@@ -1134,7 +1134,7 @@ summary:focus-visible { outline: 3px solid var(--rust-dark); outline-offset: 2px
 }
 .arrow-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-/* ===== VillageReach header and footer (brand step 3) ===== */
+/* ===== header and footer (brand step 3) ===== */
 /* Header: solid dark brown (set in step 1), white name, small uppercase descriptor */
 .brand-name { font-size: 20px; letter-spacing: 0.01em; }
 .brand-sub {
@@ -1158,7 +1158,7 @@ summary:focus-visible { outline: 3px solid var(--rust-dark); outline-offset: 2px
 .footer-compact nav a { font-weight: 600; }
 .footer-compact a:hover { text-underline-offset: 4px; }
 
-/* ===== VillageReach Home page (brand step 4) ===== */
+/* ===== Home page (brand step 4) ===== */
 /* Display headings: Light, with the key words in Bold */
 .display { font-weight: 300; }
 .display strong { font-weight: 700; }
@@ -1267,7 +1267,7 @@ summary:focus-visible { outline: 3px solid var(--rust-dark); outline-offset: 2px
   .band { padding: 48px 0; }
 }
 
-/* ===== VillageReach logo in the header ===== */
+/* ===== logo in the header ===== */
 .brand { flex-direction: row; align-items: center; gap: 14px; }
 .brand-logo { height: 76px; width: auto; }
 .brand-text {
@@ -1276,7 +1276,7 @@ summary:focus-visible { outline: 3px solid var(--rust-dark); outline-offset: 2px
   padding-left: 14px;
   border-left: 1px solid rgba(255, 255, 255, 0.3);   /* thin divider between logo and name */
 }
-/* Tablets and small laptops: less room, so a smaller logo and no "A VillageReach platform" */
+/* Tablets and small laptops: less room, so a smaller logo and no strapline */
 @media (max-width: 1100px) {
   .brand-logo { height: 60px; }
   .brand-text { display: none; }
@@ -1286,7 +1286,7 @@ summary:focus-visible { outline: 3px solid var(--rust-dark); outline-offset: 2px
   .brand-logo { height: 52px; }
 }
 
-/* ===== VillageReach Home page design (brand step 4) ===== */
+/* ===== Home page design (brand step 4) ===== */
 /* Display headings: light text with the key words in bold */
 .display { font-weight: 300; letter-spacing: -0.01em; }
 .display strong { font-weight: 700; }
@@ -1348,7 +1348,7 @@ h2.display { font-size: clamp(28px, 3vw, 38px); margin: 4px 0 24px; }
 .meta-dot-olive { background: var(--olive); }
 .meta-dot-blue { background: var(--slate-blue); }
 
-/* ===== VillageReach design on all other pages (brand step 5) ===== */
+/* ===== design on all other pages (brand step 5) ===== */
 /* Page titles in the light + bold style (pages add class="display") */
 .page h1.display { font-size: clamp(30px, 3.6vw, 44px); margin: 6px 0 16px; }
 .page h2.display { font-size: clamp(24px, 2.6vw, 32px); margin: 32px 0 16px; }
@@ -1591,7 +1591,7 @@ h2.display { font-size: clamp(28px, 3vw, 38px); margin: 4px 0 24px; }
   .amap-label-small { font-size: 22px; }
 }
 
-/* ===== Admin: maturity results form (VillageReach framework) ===== */
+/* ===== Admin: maturity results form (maturity framework) ===== */
 .results-layout { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin-top: 24px; }
 .results-main { flex: 3 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
 .results-main .edit-card { max-width: none; margin-top: 0; }
@@ -1635,7 +1635,7 @@ h2.display { font-size: clamp(28px, 3vw, 38px); margin: 4px 0 24px; }
 .calc-no { color: #B42318; font-weight: 600; }
 .calc-panel .form-actions { margin-top: 0; flex-wrap: wrap; }
 
-/* ===== Public: Maturity page (VillageReach framework) ===== */
+/* ===== Public: Maturity page (maturity framework) ===== */
 .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
 .section-head .filter-tabs { margin: 0; }
 .maturity-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin: 20px 0 24px; }
@@ -1853,7 +1853,7 @@ h2.display { font-size: clamp(28px, 3vw, 38px); margin: 4px 0 24px; }
 .edit-subhead { margin: 20px 0 4px; font-size: 18px; color: var(--rust); }
 .edit-subhead + p { margin-top: 0; }
 
-/* VillageReach round 1: evidence and confidence on public pages */
+/* Round 1: evidence and confidence on public pages */
 .mchart-main { flex-basis: 100%; }
 .mchart-sub { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .mchart-docs { font-size: 13px; color: #4E636B; font-weight: 400; }
