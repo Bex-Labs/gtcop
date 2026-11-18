@@ -1888,3 +1888,19 @@ h2.display { font-size: clamp(28px, 3vw, 38px); margin: 4px 0 24px; }
 
 /* Home: "View all countries" right under the 6 country cards */
 .band-link-tight { margin-top: 16px; }
+
+/* Admin: bulk upload of documents */
+.page-head-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.bulk-card { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+.bulk-card h2 { margin: 0; }
+.bulk-card p { margin: 0; }
+.bulk-card input[type="file"] { width: 100%; padding: 10px; background: var(--white); border: 1px dashed var(--border); }
+.bulk-card .btn { align-self: flex-start; }
+.bulk-list td { vertical-align: top; }
+.bulk-skip td { background: #F7F5F0; color: #5C6670; }
+.bulk-problem { color: #B42318; font-weight: 700; font-size: 13px; }
+.bulk-actions-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Admin: tick boxes on the Documents list */
+.docs-bulk { padding: 14px 20px; margin-bottom: 12px; border-bottom: 0; }
+.docs-bulk.is-active { margin: 0 0 12px; padding: 14px 20px; }

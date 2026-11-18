@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { setDocumentStatus } from "./actions";
+import DocumentsTable from "@/components/DocumentsTable";
 
 export const metadata = { title: "Documents | GTCOP Admin" };
 
@@ -13,29 +13,10 @@ const FILTERS = [
   { value: "archived", label: "Archived" },
 ];
 
-const BADGE = {
-  published: "badge-live",
-  draft: "badge-hidden",
-  pending: "badge-pending",
-  rejected: "badge-error",
-  archived: "badge-hidden",
-};
-
 const PER_PAGE = 50;
 
-// A small button that changes a document's status
-function StatusButton({ id, status, label }) {
-  return (
-    <form action={setDocumentStatus}>
-      <input type="hidden" name="id" value={id} />
-      <input type="hidden" name="status" value={status} />
-      <button className="link-button">{label}</button>
-    </form>
-  );
-}
-
 export default async function DocumentsAdminPage({ searchParams }) {
-  const { status = "all", q = "", country = "", page = "1" } = await searchParams;
+  const { status = "all", q = "", country = "", page = "1", bulk, done, skipped, error } = await searchParams;
   const pageNum = Math.max(1, Number(page) || 1);
   const supabase = await createClient();
 
@@ -70,13 +51,26 @@ export default async function DocumentsAdminPage({ searchParams }) {
     return text ? `/admin/documents?${text}` : "/admin/documents";
   };
 
+  // Message after a bulk publish / unpublish / archive
+  const WORD = { published: "published", draft: "unpublished (back to draft)", archived: "archived" };
+  const bulkMessage = WORD[bulk]
+    ? `${done ?? 0} document${done === "1" ? "" : "s"} ${WORD[bulk]}.` +
+      (Number(skipped) > 0 ? ` ${skipped} skipped because their status did not allow it.` : "")
+    : "";
+
   return (
     <>
       <p className="eyebrow">Repository</p>
       <div className="page-head">
         <h1>Documents</h1>
-        <Link href="/admin/documents/new" className="btn btn-primary">Upload document</Link>
+        <div className="page-head-actions">
+          <Link href="/admin/documents/bulk" className="btn btn-outline">Bulk upload</Link>
+          <Link href="/admin/documents/new" className="btn btn-primary">Upload document</Link>
+        </div>
       </div>
+
+      {bulkMessage && <div className="alert alert-success" role="status">{bulkMessage}</div>}
+      {error && <div className="alert alert-error" role="alert">{error}</div>}
 
       {/* Filter tabs: these change the ?status= part of the address */}
       <nav className="filter-tabs" aria-label="Filter documents by status">
@@ -110,51 +104,11 @@ export default async function DocumentsAdminPage({ searchParams }) {
         {(q || country) && <> · <Link href={link({ q: "", country: "", page: "" })}>Clear search</Link></>}
       </p>
 
-      <div className="card table-card">
-        {documents.length === 0 ? (
-          <p className="muted">No documents here yet.</p>
-        ) : (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Country</th>
-                <th>Category</th>
-                <th>Year</th>
-                <th>Status</th>
-                <th>Updated</th>
-                <th><span className="visually-hidden">Actions</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {documents.map((d) => (
-                <tr key={d.id}>
-                  <td><Link href={`/admin/documents/${d.id}`}>{d.title}</Link></td>
-                  <td>{d.countries?.name}</td>
-                  <td>{d.categories?.name}</td>
-                  <td>{d.year}</td>
-                  <td>
-                    <span className={`badge ${BADGE[d.status]}`}>{d.status}</span>
-                  </td>
-                  <td>{new Date(d.updated_at).toLocaleDateString("en-GB")}</td>
-                  <td>
-                    <div className="row-actions">
-                      <Link href={`/admin/documents/${d.id}`} className="link-button">Edit</Link>
-                      {d.status === "pending" && <Link href="/admin/review" className="link-button">Review</Link>}
-                      {d.status === "draft" && <StatusButton id={d.id} status="published" label="Publish" />}
-                      {d.status === "published" && <StatusButton id={d.id} status="draft" label="Unpublish" />}
-                      {!["archived", "pending"].includes(d.status) && (
-                        <StatusButton id={d.id} status="archived" label="Archive" />
-                      )}
-                      {d.status === "archived" && <StatusButton id={d.id} status="draft" label="Restore" />}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <DocumentsTable
+        key={`${status}-${q}-${country}-${pageNum}-${bulk ?? ""}-${done ?? ""}`}
+        documents={documents}
+        back={link({ page: pageNum > 1 ? String(pageNum) : "" })}
+      />
 
       {pages > 1 && (
         <nav className="pager" aria-label="Pages">
