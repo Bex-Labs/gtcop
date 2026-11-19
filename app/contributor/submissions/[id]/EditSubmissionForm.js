@@ -7,12 +7,13 @@ import { createClient } from "@/lib/supabase/client";
 import { notifyNewSubmission } from "../../actions"; // F-05
 
 const ALLOWED = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"];
-const MAX_BYTES = 50 * 1024 * 1024; // 50 MB
+const MAX_BYTES = 200 * 1024 * 1024; // 200 MB
 
 export default function EditSubmissionForm({ doc, categories }) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [noDateTicked, setNoDateTicked] = useState(doc.year == null);
   const thisYear = new Date().getFullYear();
   const currentFile = doc.file_path.split("/").pop().replace(/^\d+-/, "");
 
@@ -23,15 +24,19 @@ export default function EditSubmissionForm({ doc, categories }) {
     const file = form.get("file");
     const hasFile = file && file.size > 0;
     const title = form.get("title").trim();
-    const year = Number(form.get("year"));
+    // "No date" ticked: the year is saved as empty
+    const noDate = form.get("no_date") === "on";
+    const year = noDate ? null : Number(form.get("year"));
 
     if (!title) return setError("Enter a title.");
     if (!form.get("category_id")) return setError("Choose a category.");
-    if (!year || year < 1990 || year > thisYear) return setError(`Enter a year between 1990 and ${thisYear}.`);
+    if (!noDate && (!year || year < 1990 || year > thisYear)) {
+      return setError(`Enter a year between 1990 and ${thisYear}, or tick "No date" if the document has none.`);
+    }
     if (hasFile) {
       const ext = file.name.split(".").pop().toLowerCase();
       if (!ALLOWED.includes(ext)) return setError("Choose a PDF, Word, Excel or PowerPoint file.");
-      if (file.size > MAX_BYTES) return setError("The file is larger than 50 MB.");
+      if (file.size > MAX_BYTES) return setError("The file is larger than 200 MB.");
     }
 
     setSaving(true);
@@ -50,7 +55,7 @@ export default function EditSubmissionForm({ doc, categories }) {
       fileFields = { file_path: path, file_type: file.name.split(".").pop().toUpperCase(), file_size: file.size };
     }
 
-    // Back to "pending" so an admin reviews it again
+    // Back to "pending" so the GTCOP team reviews it again
     const { error: saveError } = await supabase
       .from("documents")
       .update({
@@ -96,7 +101,11 @@ export default function EditSubmissionForm({ doc, categories }) {
         </div>
         <div>
           <label htmlFor="year">Year *</label>
-          <input id="year" name="year" type="number" min="1990" max={thisYear} defaultValue={doc.year} />
+          <input id="year" name="year" type="number" min="1990" max={thisYear} defaultValue={doc.year ?? ""} disabled={noDateTicked} />
+          <label className="checkbox" style={{ marginTop: 8 }}>
+            <input type="checkbox" name="no_date" checked={noDateTicked} onChange={(e) => setNoDateTicked(e.target.checked)} />
+            No date on the document
+          </label>
         </div>
       </div>
 

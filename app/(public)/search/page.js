@@ -31,7 +31,8 @@ export default async function SearchPage({ searchParams }) {
   }
   if (country) query = query.eq("country_id", country);
   if (category) query = query.eq("category_id", category);
-  if (year) query = query.eq("year", year);
+  if (year === "none") query = query.is("year", null);
+  else if (year) query = query.eq("year", year);
 
   const { data } = await query.limit(100);
 
@@ -72,6 +73,7 @@ export default async function SearchPage({ searchParams }) {
         <select id="year" name="year" defaultValue={year}>
           <option value="">Any year</option>
           {years.map((y) => <option key={y} value={y}>{y}</option>)}
+          <option value="none">No date</option>
         </select>
 
         <button className="btn btn-primary">Search</button>
@@ -95,7 +97,7 @@ export default async function SearchPage({ searchParams }) {
             <li key={d.id}>
               <Link href={`/documents/${d.id}`} className="doc-title">{d.title}</Link>
               <span className="muted small">
-                {[d.countries?.name, d.categories?.name, d.year].filter(Boolean).join(" · ")}
+                {[d.countries?.name, d.categories?.name, d.year ?? "No date"].filter(Boolean).join(" · ")}
               </span>
             </li>
           ))}

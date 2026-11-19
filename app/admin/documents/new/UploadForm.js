@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
-const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
+const MAX_SIZE = 200 * 1024 * 1024; // 200 MB
 const ALLOWED = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"];
 const LANGUAGES = ["English", "French", "Portuguese", "Arabic", "Other"];
 
@@ -36,7 +36,7 @@ export default function UploadForm({ countries, categories }) {
       return;
     }
     if (selected.size > MAX_SIZE) {
-      setErrors((e) => ({ ...e, file: "This file is larger than 50 MB." }));
+      setErrors((e) => ({ ...e, file: "This file is larger than 200 MB." }));
       return;
     }
     setErrors((e) => ({ ...e, file: undefined }));
@@ -67,7 +67,7 @@ export default function UploadForm({ countries, categories }) {
     if (!values.title) newErrors.title = "Please enter a title.";
     if (!values.country_id) newErrors.country_id = "Please choose a country.";
     if (!values.category_id) newErrors.category_id = "Please choose a category.";
-    if (!values.year) newErrors.year = "Please choose the year published.";
+    if (!values.year) newErrors.year = "Please choose the year published, or No date if the document has none.";
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
@@ -99,7 +99,7 @@ export default function UploadForm({ countries, categories }) {
       title: values.title,
       country_id: Number(values.country_id),
       category_id: Number(values.category_id),
-      year: Number(values.year),
+      year: values.year === "none" ? null : Number(values.year), // "No date" is saved as empty
       issuing_body: values.issuing_body || null,
       language: values.language || null,
       description: values.description || null,
@@ -170,7 +170,7 @@ export default function UploadForm({ countries, categories }) {
           Drag and drop a file here, or{" "}
           <label htmlFor="file" className="link-label">browse</label>
         </p>
-        <p className="muted small">PDF, Word, Excel or PowerPoint · up to 50 MB</p>
+        <p className="muted small">PDF, Word, Excel or PowerPoint · up to 200 MB</p>
         <input
           id="file"
           type="file"
@@ -225,6 +225,7 @@ export default function UploadForm({ countries, categories }) {
           <label htmlFor="year">Year published *</label>
           <select id="year" name="year" defaultValue="" aria-invalid={errors.year ? "true" : "false"}>
             <option value="">Choose a year…</option>
+            <option value="none">No date</option>
             {YEARS.map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}
@@ -263,4 +264,3 @@ export default function UploadForm({ countries, categories }) {
     </form>
   );
 }
-

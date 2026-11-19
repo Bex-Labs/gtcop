@@ -85,7 +85,7 @@ export default async function DocumentPage({ params }) {
 
           <dl className="detail-list">
             <dt>Category</dt><dd>{doc.categories?.name}</dd>
-            <dt>Year</dt><dd>{doc.year || "—"}</dd>
+            <dt>Year</dt><dd>{doc.year || "No date"}</dd>
             <dt>Issuing body</dt><dd>{doc.issuing_body || "—"}</dd>
             <dt>Language</dt><dd>{doc.language || "—"}</dd>
             <dt>File</dt><dd>{doc.file_type} · {formatSize(doc.file_size)}</dd>
@@ -112,7 +112,7 @@ export default async function DocumentPage({ params }) {
               <Link key={m.id} href={`/documents/${m.id}`} className="card study-card">
                 <span className="muted small">{m.categories?.name}</span>
                 <span className="study-title">{m.title}</span>
-                <span className="muted small">{m.year}</span>
+                <span className="muted small">{m.year ?? "No date"}</span>
               </Link>
             ))}
           </div>

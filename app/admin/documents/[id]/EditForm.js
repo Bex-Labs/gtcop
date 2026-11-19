@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-const MAX_SIZE = 50 * 1024 * 1024;
+const MAX_SIZE = 200 * 1024 * 1024;
 const ALLOWED = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"];
 const LANGUAGES = ["English", "French", "Portuguese", "Arabic", "Other"];
 const thisYear = new Date().getFullYear();
@@ -26,7 +26,7 @@ export default function EditForm({ doc, countries, categories }) {
       return;
     }
     if (selected.size > MAX_SIZE) {
-      setErrors((e) => ({ ...e, file: "This file is larger than 50 MB." }));
+      setErrors((e) => ({ ...e, file: "This file is larger than 200 MB." }));
       return;
     }
     setErrors((e) => ({ ...e, file: undefined }));
@@ -42,7 +42,7 @@ export default function EditForm({ doc, countries, categories }) {
       title: (form.get("title") || "").trim(),
       country_id: Number(form.get("country_id")),
       category_id: Number(form.get("category_id")),
-      year: Number(form.get("year")),
+      year: form.get("year") === "none" ? null : Number(form.get("year")) || "", // "No date" is saved as empty
       issuing_body: (form.get("issuing_body") || "").trim() || null,
       language: form.get("language") || null,
       description: (form.get("description") || "").trim() || null,
@@ -52,7 +52,7 @@ export default function EditForm({ doc, countries, categories }) {
     if (!values.title) newErrors.title = "Please enter a title.";
     if (!values.country_id) newErrors.country_id = "Please choose a country.";
     if (!values.category_id) newErrors.category_id = "Please choose a category.";
-    if (!values.year) newErrors.year = "Please choose the year published.";
+    if (values.year === "") newErrors.year = "Please choose the year published, or No date if the document has none.";
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
@@ -135,8 +135,9 @@ export default function EditForm({ doc, countries, categories }) {
       <div className="field-row">
         <div>
           <label htmlFor="year">Year published *</label>
-          <select id="year" name="year" defaultValue={doc.year ?? ""}>
+          <select id="year" name="year" defaultValue={doc.year ?? "none"}>
             <option value="">Choose a year…</option>
+            <option value="none">No date</option>
             {YEARS.map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}

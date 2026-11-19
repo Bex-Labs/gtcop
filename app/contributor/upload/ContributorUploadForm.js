@@ -7,13 +7,14 @@ import { createClient } from "@/lib/supabase/client";
 import { notifyNewSubmission } from "../actions"; // F-05
 
 const ALLOWED = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"];
-const MAX_BYTES = 50 * 1024 * 1024; // 50 MB
+const MAX_BYTES = 200 * 1024 * 1024; // 200 MB
 
 export default function ContributorUploadForm({ countryId, countryName, isoCode, categories }) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [done, setDone] = useState(false);
+  const [noDateTicked, setNoDateTicked] = useState(false);
   const thisYear = new Date().getFullYear();
 
   async function handleSubmit(event) {
@@ -23,16 +24,20 @@ export default function ContributorUploadForm({ countryId, countryName, isoCode,
     const file = form.get("file");
     const title = form.get("title").trim();
     const categoryId = form.get("category_id");
-    const year = Number(form.get("year"));
+    // "No date" ticked: the year is saved as empty
+    const noDate = form.get("no_date") === "on";
+    const year = noDate ? null : Number(form.get("year"));
 
     // Check before uploading
     if (!file || file.size === 0) return setError("Choose a file to upload.");
     const ext = file.name.split(".").pop().toLowerCase();
     if (!ALLOWED.includes(ext)) return setError("Choose a PDF, Word, Excel or PowerPoint file.");
-    if (file.size > MAX_BYTES) return setError("The file is larger than 50 MB.");
+    if (file.size > MAX_BYTES) return setError("The file is larger than 200 MB.");
     if (!title) return setError("Enter a title.");
     if (!categoryId) return setError("Choose a category.");
-    if (!year || year < 1990 || year > thisYear) return setError(`Enter a year between 1990 and ${thisYear}.`);
+    if (!noDate && (!year || year < 1990 || year > thisYear)) {
+      return setError(`Enter a year between 1990 and ${thisYear}, or tick "No date" if the document has none.`);
+    }
 
     setSaving(true);
     const supabase = createClient();
@@ -47,7 +52,7 @@ export default function ContributorUploadForm({ countryId, countryName, isoCode,
       return setError("The file could not be uploaded. Please try again.");
     }
 
-    // 2. Save the details as "pending": hidden until an admin approves it
+    // 2. Save the details as "pending": hidden until the GTCOP team approves it
     const { data: saved, error: saveError } = await supabase
       .from("documents")
       .insert({
@@ -104,7 +109,7 @@ export default function ContributorUploadForm({ countryId, countryName, isoCode,
 
       <label htmlFor="file">File *</label>
       <input id="file" name="file" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" />
-      <p className="muted small">PDF, Word, Excel or PowerPoint, up to 50 MB.</p>
+      <p className="muted small">PDF, Word, Excel or PowerPoint, up to 200 MB.</p>
 
       <label htmlFor="title">Title *</label>
       <input id="title" name="title" />
@@ -119,7 +124,11 @@ export default function ContributorUploadForm({ countryId, countryName, isoCode,
         </div>
         <div>
           <label htmlFor="year">Year *</label>
-          <input id="year" name="year" type="number" min="1990" max={thisYear} defaultValue={thisYear} />
+          <input id="year" name="year" type="number" min="1990" max={thisYear} defaultValue={thisYear} disabled={noDateTicked} />
+          <label className="checkbox" style={{ marginTop: 8 }}>
+            <input type="checkbox" name="no_date" checked={noDateTicked} onChange={(e) => setNoDateTicked(e.target.checked)} />
+            No date on the document
+          </label>
         </div>
       </div>
 

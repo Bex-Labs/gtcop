@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { SECTIONS } from "@/lib/study";
 
 const ALLOWED = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"];
-const MAX_BYTES = 50 * 1024 * 1024; // 50 MB
+const MAX_BYTES = 200 * 1024 * 1024; // 200 MB
 
 export default function StudyForm({ countries, initial }) {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function StudyForm({ countries, initial }) {
     if (hasFile) {
       const ext = file.name.split(".").pop().toLowerCase();
       if (!ALLOWED.includes(ext)) return setError("Choose a PDF, Word, Excel or PowerPoint file.");
-      if (file.size > MAX_BYTES) return setError("The file is larger than 50 MB.");
+      if (file.size > MAX_BYTES) return setError("The file is larger than 200 MB.");
     }
 
     setSaving(true);
@@ -113,7 +113,7 @@ export default function StudyForm({ countries, initial }) {
       <label htmlFor="file">{currentFile ? "Replace file (optional)" : "File (optional)"}</label>
       {currentFile && <p className="muted small">Current file: {currentFile}</p>}
       <input id="file" name="file" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" />
-      <p className="muted small">PDF, Word, Excel or PowerPoint, up to 50 MB.</p>
+      <p className="muted small">PDF, Word, Excel or PowerPoint, up to 200 MB.</p>
 
       <div className="form-actions">
         <Link href="/admin/study-materials" className="btn btn-outline">Cancel</Link>

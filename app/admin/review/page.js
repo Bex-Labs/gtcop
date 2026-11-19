@@ -56,7 +56,7 @@ export default async function ReviewPage({ searchParams }) {
               <p className="eyebrow">{d.countries?.name} · {d.categories?.name}</p>
               <h2>{d.title}</h2>
               <p className="muted small">
-                {[d.year, d.file_type, formatSize(d.file_size), d.issuing_body].filter(Boolean).join(" · ")}
+                {[d.year ?? "No date", d.file_type, formatSize(d.file_size), d.issuing_body].filter(Boolean).join(" · ")}
               </p>
               {d.description && <p>{d.description}</p>}
               <p className="muted small">

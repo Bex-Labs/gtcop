@@ -129,7 +129,7 @@ export default function DocumentsTable({ documents, back }) {
                   <td><Link href={`/admin/documents/${d.id}`}>{d.title}</Link></td>
                   <td>{d.countries?.name}</td>
                   <td>{d.categories?.name}</td>
-                  <td>{d.year}</td>
+                  <td>{d.year ?? "No date"}</td>
                   <td>
                     <span className={`badge ${BADGE[d.status]}`}>{d.status}</span>
                   </td>

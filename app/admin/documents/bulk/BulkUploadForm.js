@@ -8,7 +8,7 @@ import { parseCsv } from "@/lib/csv";
 // Bulk upload: (1) choose the upload list (CSV), (2) choose the folder with the files,
 // (3) check the table, (4) upload. Every document is saved as a draft.
 
-const MAX_SIZE = 50 * 1024 * 1024; // same 50 MB limit as the single upload form
+const MAX_SIZE = 200 * 1024 * 1024; // same 200 MB limit as the single upload form
 const ALLOWED = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"];
 const COLUMNS = ["file", "country", "title", "category", "year", "language"];
 
@@ -65,6 +65,8 @@ export default function BulkUploadForm({ countries, categories, existing }) {
       const problems = [];
       const country = countryBy.get(plain(r.country));
       const category = categoryBy.get(plain(r.category));
+      // A 4-digit year, or "No date" for documents that have none (saved as empty)
+      const noDate = ["no date", "n.d.", "nd", "none"].includes(plain(r.year));
       const year = /^\d{4}$/.test(r.year) ? Number(r.year) : null;
       const file = files?.get(key(r.file)) ?? null;
       const ext = r.file.split(".").pop().toLowerCase();
@@ -72,10 +74,10 @@ export default function BulkUploadForm({ countries, categories, existing }) {
       if (!r.title) problems.push("No title");
       if (!country) problems.push(`Country "${r.country}" isn't on the site`);
       if (!category) problems.push(`Category "${r.category}" isn't on the site`);
-      if (!year) problems.push("No year");
+      if (!year && !noDate) problems.push(r.year ? `Year "${r.year}" not understood` : "No year (write No date if it has none)");
       if (!ALLOWED.includes(ext)) problems.push("File type not allowed");
       if (files && !file) problems.push("File not found in the folder");
-      if (file && file.size > MAX_SIZE) problems.push("Larger than 50 MB");
+      if (file && file.size > MAX_SIZE) problems.push("Larger than 200 MB");
 
       const dupKey = country ? `${country.id}|${plain(r.title)}` : null;
       let skip = null;
@@ -83,7 +85,7 @@ export default function BulkUploadForm({ countries, categories, existing }) {
       else if (dupKey && seen.has(dupKey)) skip = "Listed twice";
       if (dupKey) seen.add(dupKey);
 
-      return { i, ...r, countryText: r.country, categoryText: r.category, country, category, year, file, problems, skip, ok: !problems.length && !skip && !!file };
+      return { i, ...r, countryText: r.country, categoryText: r.category, country, category, year, file, noDate, problems, skip, ok: !problems.length && !skip && !!file };
     });
   }, [list, files, countryBy, categoryBy, onSite]);
 
@@ -147,7 +149,7 @@ export default function BulkUploadForm({ countries, categories, existing }) {
     <>
       <section className="card bulk-card">
         <h2>1. Choose the upload list</h2>
-        <p className="muted small">A CSV with the columns: file, country, title, category, year, language.</p>
+        <p className="muted small">A CSV with the columns: file, country, title, category, year, language. For a document with no date, write <strong>No date</strong> in the year column.</p>
         <input type="file" accept=".csv,text/csv" onChange={chooseList} disabled={running} aria-label="Upload list (CSV)" />
         {list?.error && <div className="alert alert-error" role="alert">{list.error}</div>}
         {list?.rows && !list.error && <p className="small"><strong>{list.rows.length}</strong> documents in {list.name}</p>}
@@ -182,7 +184,7 @@ export default function BulkUploadForm({ countries, categories, existing }) {
                     <td><strong>{r.title || "–"}</strong></td>
                     <td>{r.country?.name ?? (r.countryText || "–")}</td>
                     <td>{r.category?.name ?? (r.categoryText || "–")}</td>
-                    <td>{r.year ?? "–"}</td>
+                    <td>{r.year ?? (r.noDate ? "No date" : "–")}</td>
                     <td className="small">{r.file ? formatSize(r.file.size) : "–"}</td>
                     <td>{rowStatus(r)}</td>
                   </tr>

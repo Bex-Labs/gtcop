@@ -43,7 +43,7 @@ export default async function CountryProfilePage({ params, searchParams }) {
       .select("id, title, year, file_type, file_size, issuing_body, category_id, updated_at")
       .eq("country_id", country.id)
       .eq("status", "published")
-      .order("year", { ascending: false }),
+      .order("year", { ascending: false, nullsFirst: false }),
   ]);
 
   const allDocs = docs ?? [];
@@ -77,7 +77,7 @@ export default async function CountryProfilePage({ params, searchParams }) {
         <CopyLinkButton />
       </section>
 
-      {/* Maturity profile + earlier rounds (maturity framework) */}
+      {/* Maturity profile + earlier rounds */}
       <CountryMaturity countryId={country.id} countryCode={country.iso_code} />
 
       {/* Country-specific recommendations (E-03) */}
@@ -113,7 +113,7 @@ export default async function CountryProfilePage({ params, searchParams }) {
                     <li key={d.id}>
                       <Link href={`/documents/${d.id}`} className="doc-title">{d.title}</Link>
                       <span className="muted small">
-                        {[d.year, d.file_type, formatSize(d.file_size), d.issuing_body].filter(Boolean).join(" · ")}
+                        {[d.year ?? "No date", d.file_type, formatSize(d.file_size), d.issuing_body].filter(Boolean).join(" · ")}
                       </span>
                     </li>
                   ))}
